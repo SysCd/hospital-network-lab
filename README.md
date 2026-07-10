@@ -1,5 +1,11 @@
 # Hospital Network Lab
 
+> **Status: Work in Progress**
+>
+> This project is in active development. The current repository contains the initial topology, VLAN structure and IP addressing plan. Routing, security controls, redundancy, network services, testing and documentation will be added as the lab progresses.
+
+A Cisco Packet Tracer hospital network designed to demonstrate VLAN segmentation, Layer 3 routing, subnetting, IP addressing and enterprise network planning.
+
 A Cisco Packet Tracer hospital network designed to demonstrate VLAN segmentation, Layer 3 routing, subnetting, IP addressing and enterprise network planning.
 
 ## Network Overview
