@@ -12,18 +12,18 @@ A Cisco Packet Tracer hospital network designed to demonstrate VLAN segmentation
 
 The network separates hospital departments into dedicated VLANs:
 
-| VLAN | Department | Subnet | Gateway |
-|---|---|---|---|
-| 5 | Administration | 10.11.5.0/24 | 10.11.5.1 |
-| 10 | Doctors | 10.11.10.0/24 | 10.11.10.1 |
-| 15 | Nurses | 10.11.15.0/24 | 10.11.15.1 |
-| 20 | Medical Devices | 10.11.20.0/24 | 10.11.20.1 |
-| 25 | Pharmacy | 10.11.25.0/24 | 10.11.25.1 |
-| 30 | Servers | 10.11.30.0/24 | 10.11.30.1 |
+| VLAN | Department      | Subnet        | Gateway    |
+| ---- | --------------- | ------------- | ---------- |
+| 5    | Administration  | 10.11.5.0/24  | 10.11.5.1  |
+| 10   | Doctors         | 10.11.10.0/24 | 10.11.10.1 |
+| 15   | Nurses          | 10.11.15.0/24 | 10.11.15.1 |
+| 20   | Medical Devices | 10.11.20.0/24 | 10.11.20.1 |
+| 25   | Pharmacy        | 10.11.25.0/24 | 10.11.25.1 |
+| 30   | Servers         | 10.11.30.0/24 | 10.11.30.1 |
 
 ## Architecture
 
-- Cisco multilayer core switch
+- Dual Cisco multilayer core switches
 - Six departmental VLANs
 - Dedicated access switches
 - Inter-VLAN routing
@@ -32,6 +32,7 @@ The network separates hospital departments into dedicated VLANs:
 - Internal server VLAN
 - External public web server
 - Point-to-point WAN links
+- Redundant core-switch connectivity using EtherChannel
 
 ## Logical Topology
 
@@ -41,13 +42,28 @@ The network separates hospital departments into dedicated VLANs:
 
 ![Hospital Network VLAN and IP Plan](diagrams/hospital-network-vlan-ip-plan.png)
 
-## Repository Contents
+## Network Upgrades
+
+### EtherChannel (LACP)
+
+Two physical FastEthernet links between `HOSP-CORE-SW1` and `HOSP-CORE-SW2` are bundled into one logical Port-Channel using LACP.
+
+The EtherChannel uses:
+
+- `Fa0/8`
+- `Fa0/9`
+- `Port-Channel 1`
+- LACP active mode
+
+Benefits include:
+
+- 200 Mbps aggregate bandwidth across two 100 Mbps links
+- Link redundancy if one connection fails
+- Load balancing across network flows
+- A single logical connection from the perspective of Spanning Tree Protocol
+
+Verification output:
 
 ```text
-hospital-network-lab/
-├── diagrams/
-│   ├── hospital-network-logical-topology.png
-│   └── hospital-network-vlan-ip-plan.png
-├── hospital.pkt
-├── Hospital Network Planning.key
-└── README.md
+1      Po1(SU)           LACP   Fa0/8(P) Fa0/9(P)
+```
