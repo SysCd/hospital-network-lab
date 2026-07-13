@@ -2,11 +2,9 @@
 
 > **Status: Work in Progress**
 >
-> This project is in active development. The current repository contains the initial topology, VLAN structure and IP addressing plan. Routing, security controls, redundancy, network services, testing and documentation will be added as the lab progresses.
+> This project is in active development. The current repository includes VLAN segmentation, IP addressing, dual core switches and EtherChannel redundancy. Additional routing, security, monitoring and network services will be added as the lab progresses.
 
-A Cisco Packet Tracer hospital network designed to demonstrate VLAN segmentation, Layer 3 routing, subnetting, IP addressing and enterprise network planning.
-
-A Cisco Packet Tracer hospital network designed to demonstrate VLAN segmentation, Layer 3 routing, subnetting, IP addressing and enterprise network planning.
+A Cisco Packet Tracer hospital network designed to demonstrate VLAN segmentation, Layer 3 routing, subnetting, IP addressing, redundancy and enterprise network planning.
 
 ## Network Overview
 
@@ -48,22 +46,41 @@ The network separates hospital departments into dedicated VLANs:
 
 Two physical FastEthernet links between `HOSP-CORE-SW1` and `HOSP-CORE-SW2` are bundled into one logical Port-Channel using LACP.
 
-The EtherChannel uses:
+![EtherChannel LACP Upgrade](diagrams/etherchannel-lacp.png)
 
-- `Fa0/8`
-- `Fa0/9`
-- `Port-Channel 1`
-- LACP active mode
+#### Configuration
 
-Benefits include:
+- Interfaces: `Fa0/8` and `Fa0/9`
+- Logical interface: `Port-Channel 1`
+- Negotiation protocol: LACP
+- LACP mode: Active
 
-- 200 Mbps aggregate bandwidth across two 100 Mbps links
-- Link redundancy if one connection fails
+#### Benefits
+
+- 200 Mbps aggregate capacity across two 100 Mbps links
+- Link redundancy if one physical connection fails
 - Load balancing across network flows
-- A single logical connection from the perspective of Spanning Tree Protocol
+- One logical connection from the perspective of Spanning Tree Protocol
 
-Verification output:
+#### Verification
 
 ```text
 1      Po1(SU)           LACP   Fa0/8(P) Fa0/9(P)
+```
+
+- `S` — Layer 2 EtherChannel
+- `U` — Port-Channel is in use
+- `P` — Interface successfully bundled
+
+## Repository Contents
+
+```text
+hospital-network-lab/
+├── diagrams/
+│   ├── hospital-network-logical-topology.png
+│   ├── hospital-network-vlan-ip-plan.png
+│   └── etherchannel-lacp.png
+├── hospital.pkt
+├── .gitignore
+└── README.md
 ```
