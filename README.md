@@ -1,14 +1,10 @@
 # Hospital Network Lab
 
 > **Status: Work in Progress**
->
-> This project is in active development. The current repository includes VLAN segmentation, IP addressing, dual core switches and EtherChannel redundancy. Additional routing, security, monitoring and network services will be added as the lab progresses.
 
-A Cisco Packet Tracer hospital network designed to demonstrate VLAN segmentation, Layer 3 routing, subnetting, IP addressing, redundancy and enterprise network planning.
+A Cisco Packet Tracer hospital network demonstrating VLAN segmentation, Layer 3 switching, subnetting, IP addressing, redundancy and enterprise network design.
 
 ## Network Overview
-
-The network separates hospital departments into dedicated VLANs:
 
 | VLAN | Department      | Subnet        | Gateway    |
 | ---- | --------------- | ------------- | ---------- |
@@ -25,16 +21,16 @@ The network separates hospital departments into dedicated VLANs:
 - Six departmental VLANs
 - Dedicated access switches
 - Inter-VLAN routing
+- EtherChannel core redundancy
+- HSRP gateway redundancy
 - Hospital edge router
 - ISP router and simulated public network
 - Internal server VLAN
 - External public web server
-- Point-to-point WAN links
-- Redundant core-switch connectivity using EtherChannel
 
 ## Logical Topology
 
-![Hospital Network Logical Topology](diagrams/hospital-network-logical-topology.png)
+![Hospital Network Logical Topology](diagrams/Hospital%20Network%20Logical%20Topology%20v1.3.png)
 
 ## VLAN and IP Addressing Plan
 
@@ -42,25 +38,14 @@ The network separates hospital departments into dedicated VLANs:
 
 ## Network Upgrades
 
-### EtherChannel (LACP)
+### EtherChannel using LACP
 
-Two physical FastEthernet links between `HOSP-CORE-SW1` and `HOSP-CORE-SW2` are bundled into one logical Port-Channel using LACP.
-
-![EtherChannel LACP Upgrade](diagrams/etherchannel-lacp.png)
-
-#### Configuration
+Two FastEthernet links between `HOSP-CORE-SW1` and `HOSP-CORE-SW2` are bundled into `Port-Channel 1`.
 
 - Interfaces: `Fa0/8` and `Fa0/9`
-- Logical interface: `Port-Channel 1`
-- Negotiation protocol: LACP
-- LACP mode: Active
-
-#### Benefits
-
-- 200 Mbps aggregate capacity across two 100 Mbps links
-- Link redundancy if one physical connection fails
-- Load balancing across network flows
-- One logical connection from the perspective of Spanning Tree Protocol
+- Protocol: LACP
+- Aggregate capacity: 200 Mbps
+- Provides link redundancy and load balancing
 
 #### Verification
 
@@ -69,17 +54,42 @@ Two physical FastEthernet links between `HOSP-CORE-SW1` and `HOSP-CORE-SW2` are 
 ```
 
 - `S` — Layer 2 EtherChannel
-- `U` — Port-Channel is in use
-- `P` — Interface successfully bundled
+- `U` — Port-Channel is operational
+- `P` — Interface is successfully bundled
+
+### HSRP Gateway Redundancy
+
+HSRP provides a shared virtual default gateway across both multilayer core switches.
+
+#### VLAN 5 Addressing
+
+| Role                 | Address     |
+| -------------------- | ----------- |
+| HSRP virtual gateway | `10.11.5.1` |
+| Core SW1 SVI         | `10.11.5.2` |
+| Core SW2 SVI         | `10.11.5.3` |
+
+- Core SW1 normally operates as Active
+- Core SW2 normally operates as Standby
+- Automatic failover occurs if the Active gateway becomes unavailable
+- PCs continue using `10.11.5.1` as their default gateway
+- The same `.1`, `.2`, `.3` addressing pattern will be used for the remaining VLANs
+
+## Topology Progress
+
+- `v1.0` — Initial VLAN topology
+- `v1.2` — Dual core switches and EtherChannel
+- `v1.3` — HSRP gateway redundancy
 
 ## Repository Contents
 
 ```text
 hospital-network-lab/
 ├── diagrams/
-│   ├── hospital-network-logical-topology.png
-│   ├── hospital-network-vlan-ip-plan.png
-│   └── etherchannel-lacp.png
+│   ├── Hospital Network Logical Topology v1.0.png
+│   ├── Hospital Network Logical Topology v1.2.png
+│   ├── Hospital Network Logical Topology v1.3.png
+│   └── hospital-network-vlan-ip-plan.png
 ├── hospital.pkt
 ├── .gitignore
 └── README.md
