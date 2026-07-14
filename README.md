@@ -4,6 +4,13 @@
 
 A Cisco Packet Tracer hospital network demonstrating VLAN segmentation, Layer 3 switching, subnetting, IP addressing, redundancy and enterprise network design.
 
+## Implemented Upgrades
+
+| Upgrade                        | Status                | Purpose                                                       |
+| ------------------------------ | --------------------- | ------------------------------------------------------------- |
+| 🔗 **EtherChannel using LACP** | ✅ Implemented        | Bundles two core links for increased bandwidth and redundancy |
+| 🛡️ **HSRP Gateway Redundancy** | ✅ VLAN 5 implemented | Provides automatic default-gateway failover                   |
+
 ## Network Overview
 
 | VLAN | Department      | Subnet        | Gateway    |
@@ -38,7 +45,7 @@ A Cisco Packet Tracer hospital network demonstrating VLAN segmentation, Layer 3 
 
 ## Network Upgrades
 
-### EtherChannel using LACP
+### 🔗 EtherChannel using LACP
 
 Two FastEthernet links between `HOSP-CORE-SW1` and `HOSP-CORE-SW2` are bundled into `Port-Channel 1`.
 
@@ -57,7 +64,7 @@ Two FastEthernet links between `HOSP-CORE-SW1` and `HOSP-CORE-SW2` are bundled i
 - `U` — Port-Channel is operational
 - `P` — Interface is successfully bundled
 
-### HSRP Gateway Redundancy
+### 🛡️ HSRP Gateway Redundancy
 
 HSRP provides a shared virtual default gateway across both multilayer core switches.
 
@@ -73,7 +80,7 @@ HSRP provides a shared virtual default gateway across both multilayer core switc
 - Core SW2 normally operates as Standby
 - Automatic failover occurs if the Active gateway becomes unavailable
 - PCs continue using `10.11.5.1` as their default gateway
-- The same `.1`, `.2`, `.3` addressing pattern will be used for the remaining VLANs
+- The same `.1`, `.2`, `.3` addressing pattern is planned for the remaining VLANs
 
 ## Topology Progress
 
