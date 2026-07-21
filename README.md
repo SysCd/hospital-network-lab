@@ -288,8 +288,16 @@ The lab used `traceroute`, `ping`, `show ip interface brief`, `show ip route`, `
 - `v1.2` — Dual core switches and EtherChannel
 - `v1.3` — HSRP gateway redundancy across all VLANs
 - `v1.4` — Dual firewalls, edge routers, ISP links and interface addressing
-- `v1.5` — Static/default routing, ASA inspection and normal-state public connectivity
-- `v1.6` — Extended ACLs and access-switch port security
+
+## Configuration Milestones
+
+- Static, default and return routing implemented
+- ASA ICMP inspection implemented on both firewalls
+- Normal-state public connectivity validated from PCs 1 through 15
+- HSRP failover from Core SW1 to Core SW2 validated
+- Extended ACLs implemented and tested
+- Access-switch port security implemented and tested
+- Full public-side failover remains incomplete
 
 ## Repository Contents
 
