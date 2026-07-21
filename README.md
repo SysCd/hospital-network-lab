@@ -23,6 +23,8 @@ A Cisco Packet Tracer hospital network demonstrating VLAN segmentation, Layer 3 
 | Static, Default and Return Routing | ✅ Implemented | Provides end-to-end connectivity between hospital and public networks. |
 | ASA ICMP Inspection | ✅ Implemented | Allows stateful handling of ICMP requests and replies. |
 | Full IP Addressing Plan | ✅ Documented | Maps VLAN, transit, WAN and public-network addressing. |
+| eBGP External Routing | 🟡 In progress | Exchanges routes between the hospital edge routers and simulated ISP autonomous systems. |
+| OSPF Internal Routing | 🟠 Planned | Will provide dynamic route learning inside the hospital network. |
 
 ### 🔐 Security
 
@@ -163,6 +165,63 @@ Hospital PC
 
 This work demonstrates directly connected routes, static routes, default routes, return routes, next-hop reachability, route summarisation, administrative distance, forward-path troubleshooting, return-path troubleshooting and asymmetric routing.
 
+## 🌍 Dynamic Routing Development
+
+The hospital network is being expanded from static routing toward a hybrid dynamic-routing design.
+
+- OSPF will handle internal route exchange within the hospital network.
+- eBGP will handle route exchange between the hospital edge routers and simulated ISP routers.
+- Static routes will remain in place during migration and testing.
+- Existing HSRP, ACL, ASA firewall and port-security configurations will remain unchanged.
+
+```text
+Hospital internal routing → OSPF
+Hospital edge to ISP routing → eBGP
+```
+
+Autonomous systems:
+
+- Hospital network: `AS 65010`
+- ISP Router 1: `AS 65001`
+- ISP Router 2: `AS 65002`
+
+### eBGP Progress
+
+Current progress:
+
+- `EDGE-R1` is configured in `AS 65010`.
+- `ISP-R1` is configured in `AS 65001`.
+- The eBGP neighbour relationship between `203.0.113.2` and `203.0.113.1` has been established.
+- `EDGE-R1` advertises the hospital summary route `10.11.0.0/16`.
+- `ISP-R1` advertises the simulated public network `198.51.100.0/24`.
+- BGP neighbour establishment and route exchange were verified using:
+  - `show ip bgp summary`
+  - `show ip bgp`
+  - `show ip route bgp`
+
+Remaining work:
+
+- Configure eBGP between `EDGE-R2` and `ISP-R2`.
+- Verify route exchange on the second ISP path.
+- Test BGP path preference.
+- Test dual-ISP failover.
+- Document the final BGP routing tables.
+
+### OSPF Progress
+
+OSPF is currently being studied and prepared for implementation.
+
+Planned scope:
+
+- Advertise hospital VLAN and transit networks dynamically.
+- Reduce reliance on internal static routes.
+- Form OSPF neighbour relationships between internal Layer 3 devices.
+- Verify learned OSPF routes.
+- Test failover behaviour with the dual-core and dual-perimeter design.
+- Keep eBGP at the ISP boundary while OSPF handles internal routing.
+
+## Security Controls
+
 ### ASA ICMP Inspection
 
 The following policy was applied on both ASA firewalls:
@@ -300,6 +359,13 @@ The lab used `traceroute`, `ping`, `show ip interface brief`, `show ip route`, `
 - Add public-side gateway redundancy
 - Add IP SLA and object tracking
 - Perform complete firewall, edge-router and ISP failover testing
+- Complete eBGP peering between `EDGE-R2` and `ISP-R2`
+- Implement OSPF inside the hospital network
+- Replace selected internal static routes only after OSPF is verified
+- Configure BGP path preference
+- Test BGP failover across both ISP paths
+- Document OSPF neighbours, areas, LSAs and learned routes
+- Add verification screenshots after both protocols are fully tested
 
 ## Topology Progress
 
@@ -317,6 +383,11 @@ The lab used `traceroute`, `ping`, `show ip interface brief`, `show ip route`, `
 - Extended ACLs implemented and tested
 - Access-switch port security implemented and tested
 - Full public-side failover remains incomplete
+- ✅ eBGP peering between `EDGE-R1` and `ISP-R1` established
+- ✅ Hospital and public routes exchanged through eBGP
+- 🟡 Second eBGP ISP path still in progress
+- 🟠 OSPF implementation planned and currently being studied
+- 🟡 Full dual-path dynamic-routing validation not yet complete
 
 ## Repository Contents
 
