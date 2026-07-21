@@ -6,18 +6,37 @@ A Cisco Packet Tracer hospital network demonstrating VLAN segmentation, Layer 3 
 
 ## Implemented Upgrades
 
-| Upgrade | Status | Purpose |
+### 🔁 Redundancy
+
+| Feature | Status | Purpose |
 | --- | --- | --- |
-| **EtherChannel using LACP** | Implemented | Bundles two core links for bandwidth and link redundancy. |
-| **HSRP Gateway Redundancy** | Implemented and tested across all VLANs | Provides automatic default-gateway failover. |
-| **Dual WAN and Perimeter Paths** | Partially validated | Provides two firewall, edge-router and ISP paths. Full public-side failover is not yet complete because the public web server currently uses `198.51.100.1` as its single default gateway. |
-| **Static, Default and Return Routing** | Implemented | Provides end-to-end connectivity between hospital and simulated public networks. |
-| **ASA ICMP Inspection** | Implemented on both firewalls | Allows stateful handling of ICMP requests and replies. |
-| **Extended ACLs** | Initial policies implemented and tested | Restricts communication between selected hospital VLANs. |
-| **Switch Port Security** | Implemented and tested on a Pharmacy access-switch port | Restricts an access port to an authorised sticky MAC address. |
-| **Full IP Addressing Plan** | Documented | Maps VLAN, transit, WAN and simulated public-network addressing. |
-| **Quality of Service** | Planned | Prioritise VoIP, emergency and critical medical traffic. |
-| **DHCP Snooping** | Deferred | Client devices currently use static IP addressing and DHCP has not yet been deployed. |
+| EtherChannel using LACP | ✅ Implemented | Bundles core links for additional bandwidth and link redundancy. |
+| HSRP Gateway Redundancy | ✅ Implemented and tested | Provides automatic default-gateway failover across all VLANs. |
+| Dual WAN and Perimeter Paths | 🟡 Partially validated | Provides redundant firewall, edge-router and ISP paths. |
+
+> Full public-side failover remains in development because the public web server currently uses ISP-R1 as its single default gateway.
+
+### 🧭 Routing and Connectivity
+
+| Feature | Status | Purpose |
+| --- | --- | --- |
+| Static, Default and Return Routing | ✅ Implemented | Provides end-to-end connectivity between hospital and public networks. |
+| ASA ICMP Inspection | ✅ Implemented | Allows stateful handling of ICMP requests and replies. |
+| Full IP Addressing Plan | ✅ Documented | Maps VLAN, transit, WAN and public-network addressing. |
+
+### 🔐 Security
+
+| Feature | Status | Purpose |
+| --- | --- | --- |
+| Extended ACLs | ✅ Implemented and tested | Restricts communication between selected hospital VLANs. |
+| Switch Port Security | ✅ Implemented and tested | Restricts access ports to authorised MAC addresses. |
+| DHCP Snooping | ⚪ Deferred | Deferred until DHCP addressing is deployed. |
+
+### 🚑 Performance
+
+| Feature | Status | Purpose |
+| --- | --- | --- |
+| Quality of Service | 🟠 Planned | Prioritise VoIP, emergency and critical medical traffic. |
 
 ## Network Architecture
 
